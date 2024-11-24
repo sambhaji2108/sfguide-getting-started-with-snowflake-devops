@@ -1,5 +1,6 @@
 use role accountadmin;
-use schema quickstart_prod.gold;
+--use schema quickstart_prod.gold;
+use schema quickstart_{{environment}}.gold;
 
 
 -- declarative target table of pipeline
@@ -16,7 +17,8 @@ create or alter table vacation_spots (
 , zoo_cnt int
 , korean_restaurant_cnt int
   -- STEP 5: INSERT CHANGES HERE
-) data_retention_time_in_days = 1;
+) --data_retention_time_in_days = 1;
+data_retention_time_in_days = {{retention_time}};
 
 
 -- task to merge pipeline results into target table
@@ -73,8 +75,6 @@ create or alter task email_notification
         where true
           and punctual_pct >= 50
           and avg_temperature_air_f >= 70
-          and korean_restaurant_cnt > 0
-and (zoo_cnt > 0 or aquarium_cnt > 0)
           -- STEP 5: INSERT CHANGES HERE
         limit 10);
 

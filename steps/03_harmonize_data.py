@@ -239,14 +239,22 @@ pipeline = [
 root = Root(Session.builder.getOrCreate())
 
 # create views in Snowflake
-silver_schema = root.databases["quickstart_prod"].schemas["silver"]
+silver_schema = root.databases[f"quickstart_{os.environ['environment']}"].schemas["silver"]
+#silver_schema = root.databases["quickstart_prod"].schemas["silver"]
 silver_schema.user_defined_functions.create(
     map_city_to_airport, mode=CreateMode.or_replace
 )
 for view in pipeline:
     silver_schema.views.create(view, mode=CreateMode.or_replace)
+<<<<<<< HEAD
     
 View(
+=======
+
+
+    View(
+        
+>>>>>>> 20316a1a1f89e3e8eb86e2202fb6a7f3dad85ed4
     name="attractions",
     columns=[
         ViewColumn(name="geo_id"),
@@ -266,6 +274,10 @@ View(
     join us_addresses__poi.cybersyn.point_of_interest_addresses_relationships poi_add 
         on poi_add.poi_id = poi.poi_id
     join us_addresses__poi.cybersyn.us_addresses address 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 20316a1a1f89e3e8eb86e2202fb6a7f3dad85ed4
         on address.address_id = poi_add.address_id
     join major_us_cities city on city.geo_id = address.id_city
     where true
@@ -273,4 +285,10 @@ View(
         and id_country = 'country/USA'
     group by city.geo_id, city.geo_name
     """,
+<<<<<<< HEAD
 ),    
+=======
+),
+
+
+>>>>>>> 20316a1a1f89e3e8eb86e2202fb6a7f3dad85ed4
